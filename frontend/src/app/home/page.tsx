@@ -12,7 +12,7 @@ export default async function Home() {
 
     return (
         <>
-            <p>{session.tokenSet.accessToken}</p>
+            <p>Access token: {session.tokenSet.accessToken}</p>
             <LogoutButton />
         </>
     )

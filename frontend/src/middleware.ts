@@ -1,5 +1,5 @@
 import { auth0 } from "@/lib/auth/auth0";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
     const res = await auth0.middleware(req);
@@ -11,8 +11,8 @@ export async function middleware(req: NextRequest) {
     try {
         // ensure token is refreshed
         await auth0.getAccessToken();
-    } catch (err) {
-        return NextResponse.redirect(new URL('/auth/login', req.nextUrl.origin));
+    } catch {
+        console.log('no token');
     }
 
     return res;
