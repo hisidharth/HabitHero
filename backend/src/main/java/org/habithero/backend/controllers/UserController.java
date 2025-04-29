@@ -1,7 +1,9 @@
 package org.habithero.backend.controllers;
 
 import org.habithero.backend.entities.User;
-import org.habithero.backend.models.CreateUserRequest;
+import org.habithero.backend.models.request.CreateUserRequest;
+import org.habithero.backend.models.response.GenericResponse;
+import org.habithero.backend.models.response.GetUserResponse;
 import org.habithero.backend.repositories.UserRepository;
 import org.habithero.backend.utils.JWTUtils;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -17,14 +19,15 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public void create(final JwtAuthenticationToken jwt, @RequestBody CreateUserRequest request) {
+    public GenericResponse create(final JwtAuthenticationToken jwt, @RequestBody CreateUserRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.userRepository.create(userId, request.getUsername(), request.getEmail());
+        return new GenericResponse();
     }
 
     @GetMapping("/me")
-    public User get(final JwtAuthenticationToken jwt) {
+    public GetUserResponse get(final JwtAuthenticationToken jwt) {
         String userId = JWTUtils.userIdFromToken(jwt);
-        return this.userRepository.getById(userId);
+        return new GetUserResponse(this.userRepository.getById(userId));
     }
 }

@@ -1,8 +1,27 @@
 import NavBar from "@/components/nav_bar/nav_bar";
 import ThemeToggle from "@/components/theme_toggle/theme_toggle";
+import CreateUserWindow from "@/components/windows/user/create";
+import { getUser } from "@/lib/api/requests";
+import { auth0 } from "@/lib/auth/auth0";
 import { ReactNode } from "react";
 
 export default async function HomeLayout({ children }: { children: ReactNode }) {
+    const session = await auth0.getSession();
+    if (!session) {
+        return;
+    }
+
+    const res = await getUser(session.tokenSet.accessToken);
+    if (!res.user) {
+        return (
+            <div className="animate-fade-in grid w-svw h-svh">
+                <CreateUserWindow email={session.user.email ?? 'unknown'} />
+            </div>
+        )
+    }
+
+    const user = res.user;
+
     return (
         <div className="animate-fade-in grid grid-rows-[50px_1fr_20px] w-svw h-svh">
             <div className="flex justify-center items-center w-full bg-bg-dark">
@@ -12,7 +31,7 @@ export default async function HomeLayout({ children }: { children: ReactNode }) 
                 </div>
             </div>
             <div className="grid grid-cols-[auto_1fr] sm:grid-cols-[200px_1fr] bg-dark-light">
-                <NavBar />
+                <NavBar user={user} />
                 <div className="">
                     {children}
                 </div>

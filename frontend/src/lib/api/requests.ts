@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 import { redirect } from "next/navigation";
 import { Endpoints } from './endpoints';
-import { CreateUserRequestT, GetUserResponse } from './models';
+import { CreateUserRequestT, GenericResponse, GetUserResponse } from './models';
 import { getReq, postReq } from './util';
 
 export async function request(url: string, data: RequestInit, accessToken: string): Promise<Response> {
@@ -40,5 +40,5 @@ export async function getUser(accessToken: string) {
 }
 
 export async function createUser(accessToken: string, req: CreateUserRequestT) {
-    return await requestAndDecode('/user/create', postReq(req), t.type({}), accessToken);
+    return await requestAndDecode('/user/create', postReq(req), GenericResponse, accessToken);
 }

@@ -1,9 +1,11 @@
 'use client';
 
+import { UserT } from "@/lib/api/models";
 import { LayoutList, LucideProps, Plus, Settings } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState } from "react";
+import EditUserWindow from "../windows/user/edit";
 
 function NavItem({ title, Icon }: { title: string, Icon: FC<LucideProps> }) {
     return (
@@ -18,18 +20,21 @@ function NavItem({ title, Icon }: { title: string, Icon: FC<LucideProps> }) {
     )
 }
 
-export default function NavBar() {
+export default function NavBar({ user }: { user: UserT }) {
+    const [editUserWindowVisible, setEditUserWindowVisible] = useState<boolean>(false);
+
     return (
         <div className="bg-bg-medium p-2 flex flex-col justify-center sm:justify-start gap-10 sm:gap-0">
             <Link href="/home">
                 <NavItem title="Overview" Icon={LayoutList} />
             </Link>
-            <Link href="#">
+            <button onClick={() => { }}>
                 <NavItem title="Add Habit" Icon={Plus} />
-            </Link>
-            <Link href="#">
+            </button>
+            <button onClick={() => setEditUserWindowVisible(true)}>
                 <NavItem title="Settings" Icon={Settings} />
-            </Link>
+            </button>
+            <EditUserWindow visible={editUserWindowVisible} setVisible={setEditUserWindowVisible} user={user} />
         </div>
     )
 }

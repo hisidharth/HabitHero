@@ -8,7 +8,13 @@ export default async function UserCard() {
         return;
     }
 
-    const user = await getUser(session.tokenSet.accessToken);
+    const res = await getUser(session.tokenSet.accessToken);
+
+    if (!res.user) {
+        return;
+    }
+
+    const user = res.user;
 
     return (
         <div className="flex flex-col gap-5 p-6 w-full rounded-md bg-bg-medium">
