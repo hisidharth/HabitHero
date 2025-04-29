@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql
+    container_name: habithero-db
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: habithero
+    volumes:
+      - habithero_db_data:/var/lib/mysql
+      - ./db/conf.d:/etc/mysql/conf.d:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  habithero_db_data:

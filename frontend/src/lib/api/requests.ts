@@ -3,6 +3,8 @@ import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 import { redirect } from "next/navigation";
 import { Endpoints } from './endpoints';
+import { CreateUserRequestT, GetUserResponse } from './models';
+import { getReq, postReq } from './util';
 
 export async function request(url: string, data: RequestInit, accessToken: string): Promise<Response> {
     data.headers = new Headers(data.headers);
@@ -31,4 +33,12 @@ export async function requestAndDecode<C extends t.Mixed>(path: string, data: Re
     }
 
     return decoded.right;
+}
+
+export async function getUser(accessToken: string) {
+    return await requestAndDecode('/user/me', getReq(), GetUserResponse, accessToken);
+}
+
+export async function createUser(accessToken: string, req: CreateUserRequestT) {
+    return await requestAndDecode('/user/create', postReq(req), t.type({}), accessToken);
 }

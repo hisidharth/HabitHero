@@ -1,0 +1,61 @@
+USE habithero;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Levels;
+DROP TABLE IF EXISTS Habits;
+DROP TABLE IF EXISTS Completions;
+DROP TABLE IF EXISTS Rewards;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE Users (
+    UserID VARCHAR(255) PRIMARY KEY,
+    Username VARCHAR(63) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    CurrentLevel INT DEFAULT 1,
+    XP INT DEFAULT 0
+);
+
+/*CREATE TABLE Levels (
+    LevelID INT AUTO_INCREMENT PRIMARY KEY,
+    LevelName VARCHAR(50) NOT NULL,
+    XPThreshold INT NOT NULL
+);*/
+
+CREATE TABLE Habits (
+    HabitID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID VARCHAR(255),
+    HabitName VARCHAR(63) NOT NULL,
+    Frequency ENUM('Daily', 'Weekly') NOT NULL,
+    Category VARCHAR(63),
+
+    CONSTRAINT FK_HabitUser
+        FOREIGN KEY (UserID)
+        REFERENCES Users(UserID)
+        ON DELETE CASCADE
+);
+
+/*CREATE TABLE Completions (
+    CompletionID INT AUTO_INCREMENT PRIMARY KEY,
+    HabitID INT,
+    UserID INT,
+    DateCompleted DATE NOT NULL,
+    StreakCount INT DEFAULT 0,
+    FOREIGN KEY (HabitID) REFERENCES Habits(HabitID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+CREATE TABLE Rewards (
+    RewardID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    RewardType VARCHAR(100) NOT NULL,
+    DateEarned DATE NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);*/
+
+
+
+
+
