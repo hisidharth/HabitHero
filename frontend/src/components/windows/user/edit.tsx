@@ -18,7 +18,7 @@ export default function EditUserWindow({ visible, setVisible, user }: { visible:
     return (
         <Window visible={visible} title="Edit Profile" Icon={Settings}>
             <WindowSpacer>
-                <TextBox value={username} setValue={setUsername} maxChars={MaxUserNameLength} multiline={false} setValid={setUsernameValid} title="Name" placeholder="Name..." />
+                <TextBox value={username} setValue={setUsername} maxChars={MaxUserNameLength} multiline={false} setValid={setUsernameValid} title="Username" placeholder="Username..." />
             </WindowSpacer>
             <WindowSpacer>
                 <WindowFooter>
