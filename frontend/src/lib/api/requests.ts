@@ -3,8 +3,8 @@ import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 import { redirect } from "next/navigation";
 import { Endpoints } from './endpoints';
-import { CreateUserRequestT, GenericResponse, GetUserResponse } from './models';
-import { getReq, postReq } from './util';
+import { CreateHabitRequestT, CreateUserRequestT, EditHabitRequestT, EditUserRequestT, GenericResponse, GetAllHabitsResponse, GetUserResponse } from './models';
+import { deleteReq, getReq, postReq } from './util';
 
 export async function request(url: string, data: RequestInit, accessToken: string): Promise<Response> {
     data.headers = new Headers(data.headers);
@@ -41,4 +41,24 @@ export async function getUser(accessToken: string) {
 
 export async function createUser(accessToken: string, req: CreateUserRequestT) {
     return await requestAndDecode('/user/create', postReq(req), GenericResponse, accessToken);
+}
+
+export async function editUser(accessToken: string, req: EditUserRequestT) {
+    return await requestAndDecode('/user/edit', postReq(req), GenericResponse, accessToken);
+}
+
+export async function getAllHabits(accessToken: string) {
+    return await requestAndDecode('/habit/all', getReq(), GetAllHabitsResponse, accessToken);
+}
+
+export async function createHabit(accessToken: string, req: CreateHabitRequestT) {
+    return await requestAndDecode('/habit/create', postReq(req), GenericResponse, accessToken);
+}
+
+export async function editHabit(accessToken: string, habitId: number, req: EditHabitRequestT) {
+    return await requestAndDecode(`/habit/edit/${habitId}`, postReq(req), GenericResponse, accessToken);
+}
+
+export async function deleteHabit(accessToken: string, habitId: number) {
+    return await requestAndDecode(`/habit/delete/${habitId}`, deleteReq(), GenericResponse, accessToken);
 }

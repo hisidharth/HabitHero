@@ -4,7 +4,7 @@ import Button from "@/components/ui/button";
 import TextBox from "@/components/ui/textbox";
 import Window, { WindowFooter, WindowFooterStart, WindowSpacer } from "@/components/ui/window";
 import { MaxUserNameLength } from "@/lib/api/values";
-import { useCreateUserMutation } from "@/lib/mutations/create_user";
+import { useCreateUserMutation } from "@/lib/mutations/user/create";
 import { LogOut, User } from "lucide-react";
 import { useState } from "react";
 

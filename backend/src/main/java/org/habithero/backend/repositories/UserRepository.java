@@ -32,6 +32,27 @@ public class UserRepository {
         return true;
     }
 
+    public boolean edit(String userId, String username) {
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "UPDATE Users " +
+                            "SET Username = ?" +
+                            "WHERE UserID = ?;"
+            );
+
+            stmt.setString(1, username);
+            stmt.setString(2, userId);
+
+            if (stmt.executeUpdate() <= 0) {
+                return false;
+            }
+        } catch(SQLException e) {
+            return false;
+        }
+
+        return true;
+    }
+
     public User getById(String userId) {
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
@@ -49,7 +70,6 @@ public class UserRepository {
 
             return userFromResultSet(rs);
         } catch(SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }

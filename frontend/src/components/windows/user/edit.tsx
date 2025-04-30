@@ -3,11 +3,12 @@ import TextBox from "@/components/ui/textbox";
 import Window, { WindowFooter, WindowFooterStart, WindowSpacer } from "@/components/ui/window";
 import { UserT } from "@/lib/api/models";
 import { MaxUserNameLength } from "@/lib/api/values";
+import { useEditUserMutation } from "@/lib/mutations/user/edit";
 import { LogOut, Settings } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 
 export default function EditUserWindow({ visible, setVisible, user }: { visible: boolean, setVisible: Dispatch<SetStateAction<boolean>>, user: UserT }) {
-    //const { mutate } = useEditUserMutation();
+    const { mutate } = useEditUserMutation();
 
     const [username, setUsername] = useState<string>(user.username);
     const [usernameValid, setUsernameValid] = useState<boolean>();
@@ -34,9 +35,9 @@ export default function EditUserWindow({ visible, setVisible, user }: { visible:
                         setUsername(user.username);
                     }} />
                     <Button title="Save" valid={valid} cn="bg-bg-accent text-fg-accent" onClick={() => {
-                        /*mutate({
-                            name: username
-                        });*/
+                        mutate({
+                            username: username
+                        });
                         setVisible(false);
                     }} />
                 </WindowFooter>

@@ -5,6 +5,7 @@ import { LayoutList, LucideProps, Plus, Settings } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { FC, useState } from "react";
+import CreateHabitWindow from "../windows/habit/create";
 import EditUserWindow from "../windows/user/edit";
 
 function NavItem({ title, Icon }: { title: string, Icon: FC<LucideProps> }) {
@@ -21,6 +22,7 @@ function NavItem({ title, Icon }: { title: string, Icon: FC<LucideProps> }) {
 }
 
 export default function NavBar({ user }: { user: UserT }) {
+    const [createHabitWindowVisible, setCreateHabitWindowVisible] = useState<boolean>(false);
     const [editUserWindowVisible, setEditUserWindowVisible] = useState<boolean>(false);
 
     return (
@@ -28,12 +30,13 @@ export default function NavBar({ user }: { user: UserT }) {
             <Link href="/home">
                 <NavItem title="Overview" Icon={LayoutList} />
             </Link>
-            <button onClick={() => { }}>
+            <button onClick={() => setCreateHabitWindowVisible(true)}>
                 <NavItem title="Add Habit" Icon={Plus} />
             </button>
             <button onClick={() => setEditUserWindowVisible(true)}>
                 <NavItem title="Settings" Icon={Settings} />
             </button>
+            <CreateHabitWindow visible={createHabitWindowVisible} setVisible={setCreateHabitWindowVisible} />
             <EditUserWindow visible={editUserWindowVisible} setVisible={setEditUserWindowVisible} user={user} />
         </div>
     )

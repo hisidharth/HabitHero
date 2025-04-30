@@ -32,7 +32,7 @@ export default async function HomeLayout({ children }: { children: ReactNode }) 
             </div>
             <div className="grid grid-cols-[auto_1fr] sm:grid-cols-[200px_1fr] bg-dark-light">
                 <NavBar user={user} />
-                <div className="">
+                <div className="overflow-y-scroll h-[calc(100svh-50px-20px)]">
                     {children}
                 </div>
             </div>

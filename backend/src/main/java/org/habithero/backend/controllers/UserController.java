@@ -2,6 +2,7 @@ package org.habithero.backend.controllers;
 
 import org.habithero.backend.entities.User;
 import org.habithero.backend.models.request.CreateUserRequest;
+import org.habithero.backend.models.request.EditUserRequest;
 import org.habithero.backend.models.response.GenericResponse;
 import org.habithero.backend.models.response.GetUserResponse;
 import org.habithero.backend.repositories.UserRepository;
@@ -22,6 +23,13 @@ public class UserController {
     public GenericResponse create(final JwtAuthenticationToken jwt, @RequestBody CreateUserRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.userRepository.create(userId, request.getUsername(), request.getEmail());
+        return new GenericResponse();
+    }
+
+    @PostMapping("/edit")
+    public GenericResponse edit(final JwtAuthenticationToken jwt, @RequestBody EditUserRequest request) {
+        String userId = JWTUtils.userIdFromToken(jwt);
+        this.userRepository.edit(userId, request.getUsername());
         return new GenericResponse();
     }
 

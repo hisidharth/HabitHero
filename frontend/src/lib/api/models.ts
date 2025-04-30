@@ -10,6 +10,16 @@ export const User = t.type({
 
 export type UserT = t.TypeOf<typeof User>;
 
+export const Habit = t.type({
+    habitId: t.number,
+    userId: t.string,
+    habitName: t.string,
+    frequency: t.number,
+    category: t.string
+});
+
+export type HabitT = t.TypeOf<typeof Habit>;
+
 export const GenericResponse = t.type({
     success: t.boolean
 })
@@ -31,3 +41,31 @@ export const CreateUserRequest = t.type({
 });
 
 export type CreateUserRequestT = t.TypeOf<typeof CreateUserRequest>;
+
+export const EditUserRequest = t.type({
+    username: t.string
+});
+
+export type EditUserRequestT = t.TypeOf<typeof EditUserRequest>;
+
+export const GetAllHabitsResponse = t.type({
+    habits: t.array(Habit)
+});
+
+export type GetAllHabitsResponseT = t.TypeOf<typeof GetAllHabitsResponse>;
+
+export const CreateHabitRequest = t.type({
+    habitName: t.string,
+    frequency: t.number,
+    category: t.string
+});
+
+export type CreateHabitRequestT = t.TypeOf<typeof CreateHabitRequest>;
+
+export const EditHabitRequest = t.type({
+    habitName: t.string,
+    frequency: t.number,
+    category: t.string
+});
+
+export type EditHabitRequestT = t.TypeOf<typeof EditHabitRequest>;

@@ -28,7 +28,7 @@ CREATE TABLE Habits (
     HabitID INT AUTO_INCREMENT PRIMARY KEY,
     UserID VARCHAR(255),
     HabitName VARCHAR(63) NOT NULL,
-    Frequency ENUM('Daily', 'Weekly') NOT NULL,
+    Frequency SMALLINT UNSIGNED NOT NULL CHECK (Frequency > 0 AND Frequency <= 7),
     Category VARCHAR(63),
 
     CONSTRAINT FK_HabitUser
