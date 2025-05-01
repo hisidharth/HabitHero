@@ -6,11 +6,13 @@ import java.sql.Timestamp;
 public class Completion {
     private int completionId;
     private int habitId;
+    private String userId;
     private Timestamp timeCompleted;
 
-    public Completion(int completionId, int habitId, Timestamp timeCompleted) {
+    public Completion(int completionId, int habitId, String userId, Timestamp timeCompleted) {
         this.completionId = completionId;
         this.habitId = habitId;
+        this.userId = userId;
         this.timeCompleted = timeCompleted;
     }
 
@@ -28,6 +30,14 @@ public class Completion {
 
     public void setHabitId(int habitId) {
         this.habitId = habitId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Timestamp getTimeCompleted() {

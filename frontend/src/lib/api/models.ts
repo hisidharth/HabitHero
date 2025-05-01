@@ -20,6 +20,15 @@ export const Habit = t.type({
 
 export type HabitT = t.TypeOf<typeof Habit>;
 
+export const Completion = t.type({
+    completionId: t.number,
+    habitId: t.number,
+    userId: t.string,
+    timeCompleted: t.string
+});
+
+export type CompletionT = t.TypeOf<typeof Completion>;
+
 export const GenericResponse = t.type({
     success: t.boolean
 })
@@ -75,3 +84,10 @@ export const CreateCompletionRequest = t.type({
 });
 
 export type CreateCompletionRequestT = t.TypeOf<typeof CreateCompletionRequest>;
+
+export const GetAllCompletionsResponse = t.type({
+    habits: t.record(t.string, Habit),
+    completions: t.record(t.string, t.array(Completion))
+});
+
+export type GetAllCompletionsResponseT = t.TypeOf<typeof GetAllCompletionsResponse>;

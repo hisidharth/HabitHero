@@ -1,4 +1,5 @@
 import Button from "@/components/ui/button";
+import NumberBox from "@/components/ui/numberbox";
 import TextBox from "@/components/ui/textbox";
 import Window, { WindowFooter, WindowSpacer } from "@/components/ui/window";
 import { MaxHabitCategoryLength, MaxHabitNameLength } from "@/lib/api/values";
@@ -15,7 +16,11 @@ export default function CreateHabitWindow({ visible, setVisible }: { visible: bo
     const [category, setCategory] = useState<string>('');
     const [categoryValid, setCategoryValid] = useState<boolean>();
 
-    const valid = habitNameValid && categoryValid;
+    const [frequency, setFrequency] = useState<number>(1);
+    const [frequencyValid, setFrequencyValid] = useState<boolean>();
+
+
+    const valid = habitNameValid && categoryValid && frequencyValid;
 
     return (
         <Window visible={visible} title="Create Habit" Icon={Plus}>
@@ -24,6 +29,9 @@ export default function CreateHabitWindow({ visible, setVisible }: { visible: bo
             </WindowSpacer>
             <WindowSpacer>
                 <TextBox value={category} setValue={setCategory} maxChars={MaxHabitCategoryLength} multiline={true} optional setValid={setCategoryValid} title="Category" placeholder="Habit category..." />
+            </WindowSpacer>
+            <WindowSpacer>
+                <NumberBox value={frequency} setValue={setFrequency} setValid={setFrequencyValid} min={1} max={100} title="Times per Week" />
             </WindowSpacer>
             <WindowSpacer>
                 <WindowFooter>
@@ -35,12 +43,13 @@ export default function CreateHabitWindow({ visible, setVisible }: { visible: bo
                     <Button title="Create" valid={valid} cn="bg-bg-accent text-fg-accent" onClick={() => {
                         mutate({
                             habitName: habitName,
-                            frequency: 1,
+                            frequency: frequency,
                             category: category,
                         });
                         setVisible(false);
                         setHabitName('');
                         setCategory('');
+                        setFrequency(1);
                     }} />
                 </WindowFooter>
             </WindowSpacer>
