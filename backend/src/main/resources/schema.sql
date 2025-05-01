@@ -37,17 +37,25 @@ CREATE TABLE Habits (
         ON DELETE CASCADE
 );
 
-/*CREATE TABLE Completions (
+CREATE TABLE Completions (
     CompletionID INT AUTO_INCREMENT PRIMARY KEY,
     HabitID INT,
-    UserID INT,
-    DateCompleted DATE NOT NULL,
+    UserID VARCHAR(255),
+    TimeCompleted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     StreakCount INT DEFAULT 0,
-    FOREIGN KEY (HabitID) REFERENCES Habits(HabitID) ON DELETE CASCADE,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+
+    CONSTRAINT FK_CompletionHabit
+        FOREIGN KEY (HabitID)
+        REFERENCES Habits(HabitID)
+        ON DELETE CASCADE,
+
+    CONSTRAINT FK_CompletionUser
+        FOREIGN KEY (UserID)
+        REFERENCES Users(UserID)
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Rewards (
+/*CREATE TABLE Rewards (
     RewardID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT,
     RewardType VARCHAR(100) NOT NULL,

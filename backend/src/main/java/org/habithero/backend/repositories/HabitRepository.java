@@ -101,6 +101,27 @@ public class HabitRepository {
         }
     }
 
+    public Habit getById(String userId, int habitId) {
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT * FROM Habits " +
+                            "WHERE UserID = ? AND HabitID = ?;"
+            );
+
+            stmt.setString(1, userId);
+            stmt.setInt(2, habitId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+
+            return habitFromResultSet(rs);
+        } catch(SQLException e) {
+            return null;
+        }
+    }
+
     private Habit habitFromResultSet(ResultSet rs) throws SQLException {
         return new Habit(
                 rs.getInt("HabitID"),

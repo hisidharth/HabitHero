@@ -69,3 +69,9 @@ export const EditHabitRequest = t.type({
 });
 
 export type EditHabitRequestT = t.TypeOf<typeof EditHabitRequest>;
+
+export const CreateCompletionRequest = t.type({
+    habitId: t.number
+});
+
+export type CreateCompletionRequestT = t.TypeOf<typeof CreateCompletionRequest>;

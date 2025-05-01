@@ -9,7 +9,6 @@ export default async function UserCard() {
     }
 
     const res = await getUser(session.tokenSet.accessToken);
-
     if (!res.user) {
         return;
     }
@@ -31,7 +30,10 @@ export default async function UserCard() {
             </div>
             <div className="flex flex-col gap-2 items-end">
                 <ProgressBar value={0.5} />
-                <p className="text-sm text-fg-dark font-bold">{user.xp}/5,000</p>
+                <div className="flex justify-center items-center gap-2">
+                    <span className="text-fg-medium text-xs">XP</span>
+                    <span className="text-sm text-fg-dark font-bold">{user.xp}/5,000</span>
+                </div>
             </div>
         </div>
     )

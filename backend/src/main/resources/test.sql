@@ -1,1 +1,1 @@
-SELECT * FROM Habits;
+SELECT * FROM Completions;

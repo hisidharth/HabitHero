@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 import { redirect } from "next/navigation";
 import { Endpoints } from './endpoints';
-import { CreateHabitRequestT, CreateUserRequestT, EditHabitRequestT, EditUserRequestT, GenericResponse, GetAllHabitsResponse, GetUserResponse } from './models';
+import { CreateCompletionRequestT, CreateHabitRequestT, CreateUserRequestT, EditHabitRequestT, EditUserRequestT, GenericResponse, GetAllHabitsResponse, GetUserResponse } from './models';
 import { deleteReq, getReq, postReq } from './util';
 
 export async function request(url: string, data: RequestInit, accessToken: string): Promise<Response> {
@@ -61,4 +61,8 @@ export async function editHabit(accessToken: string, habitId: number, req: EditH
 
 export async function deleteHabit(accessToken: string, habitId: number) {
     return await requestAndDecode(`/habit/delete/${habitId}`, deleteReq(), GenericResponse, accessToken);
+}
+
+export async function createCompletion(accessToken: string, req: CreateCompletionRequestT) {
+    return await requestAndDecode('/completion/create', postReq(req), GenericResponse, accessToken);
 }
