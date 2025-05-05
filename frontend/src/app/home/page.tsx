@@ -9,12 +9,15 @@ export default async function Home() {
         return;
     }
 
-    const res = await getAllCompletions(session.tokenSet.accessToken);
+    const res = await getAllCompletions(session.tokenSet.accessToken, 2);
 
     const habits = [];
     for (const habitId in res.habits) {
         habits.push(res.habits[habitId]);
     }
+
+    console.log(res.startTime);
+    console.log(res.endTime);
 
     return (
         <div className="p-5">

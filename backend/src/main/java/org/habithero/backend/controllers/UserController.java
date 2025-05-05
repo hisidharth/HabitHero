@@ -23,14 +23,14 @@ public class UserController {
     public GenericResponse create(final JwtAuthenticationToken jwt, @RequestBody CreateUserRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.userRepository.create(userId, request.getUsername(), request.getEmail());
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @PostMapping("/edit")
     public GenericResponse edit(final JwtAuthenticationToken jwt, @RequestBody EditUserRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.userRepository.edit(userId, request.getUsername());
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @GetMapping("/me")

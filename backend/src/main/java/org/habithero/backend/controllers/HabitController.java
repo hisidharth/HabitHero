@@ -22,21 +22,21 @@ public class HabitController {
     public GenericResponse create(final JwtAuthenticationToken jwt, @RequestBody CreateHabitRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.habitRepository.create(userId, request.getHabitName(), request.getFrequency(), request.getCategory());
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @PostMapping("/edit/{habitId}")
     public GenericResponse edit(final JwtAuthenticationToken jwt, @PathVariable int habitId, @RequestBody EditHabitRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.habitRepository.edit(userId, habitId, request.getHabitName(), request.getFrequency(), request.getCategory());
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @DeleteMapping("/delete/{habitId}")
     public GenericResponse delete(final JwtAuthenticationToken jwt, @PathVariable int habitId) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.habitRepository.delete(userId, habitId);
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @GetMapping("/get/all")

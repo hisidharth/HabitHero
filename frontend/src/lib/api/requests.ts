@@ -67,8 +67,8 @@ export async function createCompletion(accessToken: string, req: CreateCompletio
     return await requestAndDecode('/completion/create', postReq(req), GenericResponse, accessToken);
 }
 
-export async function getAllCompletions(accessToken: string) {
-    return await requestAndDecode('/completion/get/all', getReq(), GetAllCompletionsResponse, accessToken);
+export async function getAllCompletions(accessToken: string, page?: number) {
+    return await requestAndDecode(`/completion/get/all?page=${page ?? '0'}`, getReq(), GetAllCompletionsResponse, accessToken);
 }
 
 export async function getSomeCompletions(accessToken: string, habitId: number) {

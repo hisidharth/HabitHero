@@ -66,7 +66,9 @@ public class CompletionRepository {
         return true;
     }
 
-    public Pair<Map<Integer, Habit>, Map<Integer, ArrayList<Completion>>> getAll(String userId) {
+    public Pair<Map<Integer, Habit>, Map<Integer, ArrayList<Completion>>> getAll(String userId, int page) {
+        System.out.println(page);
+
         Map<Integer, Habit> habits = new HashMap<>();
         Map<Integer, ArrayList<Completion>> completions = new HashMap<>();
 

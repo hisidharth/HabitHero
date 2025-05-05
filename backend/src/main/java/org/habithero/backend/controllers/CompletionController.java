@@ -10,10 +10,14 @@ import org.habithero.backend.utils.JWTUtils;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+
 @RestController
 @RequestMapping("/completion")
 public class CompletionController {
-    private CompletionRepository completionRepository;
+    private final CompletionRepository completionRepository;
 
     public CompletionController(CompletionRepository completionRepository) {
         this.completionRepository = completionRepository;
@@ -22,21 +26,26 @@ public class CompletionController {
     public GenericResponse create(final JwtAuthenticationToken jwt, @RequestBody CreateCompletionRequest request) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.completionRepository.create(userId, request.getHabitId());
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @DeleteMapping("/delete/{habitId}/{completionId}")
     public GenericResponse delete(final JwtAuthenticationToken jwt, @PathVariable int habitId, @PathVariable int completionId) {
         String userId = JWTUtils.userIdFromToken(jwt);
         this.completionRepository.delete(userId, habitId, completionId);
-        return new GenericResponse();
+        return new GenericResponse(true);
     }
 
     @GetMapping("/get/all")
-    public GetAllCompletionsResponse getAll(final JwtAuthenticationToken jwt) {
+    public GetAllCompletionsResponse getAll(final JwtAuthenticationToken jwt, @RequestParam int page) {
         String userId = JWTUtils.userIdFromToken(jwt);
-        var res = this.completionRepository.getAll(userId);
-        return new GetAllCompletionsResponse(res.a, res.b);
+        var res = this.completionRepository.getAll(userId, page);
+        return new GetAllCompletionsResponse(
+                Timestamp.from(ZonedDateTime.now().toInstant()),
+                Timestamp.from(ZonedDateTime.now().toInstant()),
+                res.a,
+                res.b
+        );
     }
 
     @GetMapping("/get/{habitId}")

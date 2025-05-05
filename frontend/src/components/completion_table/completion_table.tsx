@@ -5,6 +5,7 @@ import { useDeleteCompletionMutation } from "@/lib/mutations/completion/delete";
 import { dateToStr } from "@/lib/util/date";
 import { Trash } from "lucide-react";
 import { motion } from "motion/react";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 function DeleteCompletionButton({ completion }: { completion: CompletionT }) {
     const { mutate } = useDeleteCompletionMutation(completion.habitId, completion.completionId);
@@ -34,14 +35,16 @@ export default function CompletionTable({ completions }: { completions: Array<Co
             {completions.map((completion, index) => {
                 const date = new Date(completion.timeCompleted);
                 return (
-                    <div key={completion.completionId} className={`grid grid-cols-[40px_2fr_1fr_40px] text-sm text-fg-medium bg-bg-${index % 2 === 0 ? 'medium' : 'dark'}`}>
-                        <div className="flex justify-center items-center p-2 border-fg-light border-r"><p>{index + 1}.</p></div>
-                        <div className="p-2 border-r border-fg-light"><p>{dateToStr(date)}</p></div>
-                        <div className="p-2 border-r border-fg-light text-bg-accent"><p>+{completion.xpEarned}</p></div>
-                        <div className="flex justify-center items-center p-2">
-                            <DeleteCompletionButton completion={completion} />
+                    <ViewTransition key={completion.completionId} name={`completion-table-row-${completion.completionId}`}>
+                        <div className={`grid grid-cols-[40px_2fr_1fr_40px] text-sm text-fg-medium bg-bg-${index % 2 === 0 ? 'medium' : 'dark'}`}>
+                            <div className="flex justify-center items-center p-2 border-fg-light border-r"><p>{index + 1}.</p></div>
+                            <div className="p-2 border-r border-fg-light"><p>{dateToStr(date)}</p></div>
+                            <div className="p-2 border-r border-fg-light text-bg-accent"><p>+{completion.xpEarned}</p></div>
+                            <div className="flex justify-center items-center p-2">
+                                <DeleteCompletionButton completion={completion} />
+                            </div>
                         </div>
-                    </div>
+                    </ViewTransition>
                 );
             })}
         </div>

@@ -87,6 +87,8 @@ export const CreateCompletionRequest = t.type({
 export type CreateCompletionRequestT = t.TypeOf<typeof CreateCompletionRequest>;
 
 export const GetAllCompletionsResponse = t.type({
+    startTime: t.string,
+    endTime: t.string,
     habits: t.record(t.string, Habit),
     completions: t.record(t.string, t.array(Completion))
 });

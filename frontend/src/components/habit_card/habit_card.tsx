@@ -112,7 +112,7 @@ export default function HabitCard({ habit, completions }: { habit: HabitT, compl
                     </div>
                     <div className="flex justify-center items-center gap-2">
                         <span className="text-fg-medium text-xs">TIMES</span>
-                        <span className="text-fg-dark font-bold">{numCompletions}/{habit.frequency}</span>
+                        <span className={`${complete ? 'text-bg-accent' : 'text-fg-dark'} font-bold`}>{numCompletions}/{habit.frequency}</span>
                     </div>
                 </div>
             </div>
