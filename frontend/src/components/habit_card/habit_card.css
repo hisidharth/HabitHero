@@ -22,3 +22,7 @@
     animation-name: bounce-animation;
     animation-duration: 1s;
 }
+
+.scale-test {
+    transform: scale(3);
+}
