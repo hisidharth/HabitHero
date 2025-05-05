@@ -8,12 +8,14 @@ public class Completion {
     private int habitId;
     private String userId;
     private Timestamp timeCompleted;
+    private int xpEarned;
 
-    public Completion(int completionId, int habitId, String userId, Timestamp timeCompleted) {
+    public Completion(int completionId, int habitId, String userId, Timestamp timeCompleted, int xpEarned) {
         this.completionId = completionId;
         this.habitId = habitId;
         this.userId = userId;
         this.timeCompleted = timeCompleted;
+        this.xpEarned = xpEarned;
     }
 
     public int getCompletionId() {
@@ -46,5 +48,13 @@ public class Completion {
 
     public void setTimeCompleted(Timestamp timeCompleted) {
         this.timeCompleted = timeCompleted;
+    }
+
+    public int getXpEarned() {
+        return xpEarned;
+    }
+
+    public void setXpEarned(int xpEarned) {
+        this.xpEarned = xpEarned;
     }
 }

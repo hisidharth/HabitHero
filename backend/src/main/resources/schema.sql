@@ -26,7 +26,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Habits (
     HabitID INT AUTO_INCREMENT PRIMARY KEY,
-    UserID VARCHAR(255),
+    UserID VARCHAR(255) NOT NULL,
     HabitName VARCHAR(63) NOT NULL,
     Frequency SMALLINT UNSIGNED NOT NULL CHECK (Frequency > 0 AND Frequency <= 100),
     Category VARCHAR(63),
@@ -39,9 +39,10 @@ CREATE TABLE Habits (
 
 CREATE TABLE Completions (
     CompletionID INT AUTO_INCREMENT PRIMARY KEY,
-    HabitID INT,
-    UserID VARCHAR(255),
+    HabitID INT NOT NULL,
+    UserID VARCHAR(255) NOT NULL,
     TimeCompleted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    XPEarned INT NOT NULL,
     StreakCount INT DEFAULT 0,
 
     CONSTRAINT FK_CompletionHabit

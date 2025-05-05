@@ -4,12 +4,12 @@ import Button from "@/components/ui/button";
 import Text from "@/components/ui/text";
 import Window, { WindowFooter, WindowSpacer } from "@/components/ui/window";
 import { HabitT } from "@/lib/api/models";
-import { useDeleteDeviceMutation } from "@/lib/mutations/habit/delete";
+import { useDeleteHabitMutation } from "@/lib/mutations/habit/delete";
 import { Trash } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
 export default function DeleteHabitWindow({ visible, setVisible, habit }: { visible: boolean, setVisible: Dispatch<SetStateAction<boolean>>, habit: HabitT }) {
-    const { mutate, isIdle } = useDeleteDeviceMutation(habit.habitId);
+    const { mutate, isIdle } = useDeleteHabitMutation(habit.habitId);
 
     return (
         <Window visible={visible} title="Delete Habit" Icon={Trash}>

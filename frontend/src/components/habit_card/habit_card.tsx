@@ -8,6 +8,7 @@ import { useState } from "react";
 import ProgressBar from "../progess_bar/progress_bar";
 import EditHabitWindow from "../windows/habit/edit";
 
+import Link from "next/link";
 import './habit_card.css';
 
 export default function HabitCard({ habit, completions }: { habit: HabitT, completions?: Array<CompletionT> }) {
@@ -25,7 +26,9 @@ export default function HabitCard({ habit, completions }: { habit: HabitT, compl
                     {/*complete && (
                         <CheckCheck width={25} height={25} className="bg-bg-accent text-fg-accent p-1 rounded" />
                     )*/}
-                    <span className="text-fg-dark font-bold">{habit.habitName}</span>
+                    <Link href={`/home/habit/${habit.habitId}`}>
+                        <span className="text-fg-dark font-bold">{habit.habitName}</span>
+                    </Link>
                     <span className="text-fg-medium text-xs">{habit.category}</span>
                 </div>
                 <div className="relative z-10">

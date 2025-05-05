@@ -18,7 +18,7 @@ export default function EditHabitWindow({ visible, setVisible, habit }: { visibl
     const [category, setCategory] = useState<string>(habit.category);
     const [categoryValid, setCategoryValid] = useState<boolean>();
 
-    const [frequency, setFrequency] = useState<number>(1);
+    const [frequency, setFrequency] = useState<number>(habit.frequency);
     const [frequencyValid, setFrequencyValid] = useState<boolean>();
 
     const valid = habitNameValid && categoryValid && frequencyValid;

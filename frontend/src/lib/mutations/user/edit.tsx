@@ -1,18 +1,17 @@
 import { EditUserRequestT } from "@/lib/api/models";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { editUserAction } from "./actions";
 
 export const editUserKey = () => ['edit_user'];
 
 export const useEditUserMutation = () => {
-    const router = useRouter();
+    //const router = useRouter();
 
     return useMutation({
         mutationFn: (vars: EditUserRequestT) => editUserAction(vars),
         mutationKey: editUserKey(),
-        onSuccess: () => {
+        /*onSuccess: () => {
             router.refresh();
-        }
+        }*/
     })
 };

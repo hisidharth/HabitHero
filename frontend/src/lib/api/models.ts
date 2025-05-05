@@ -24,7 +24,8 @@ export const Completion = t.type({
     completionId: t.number,
     habitId: t.number,
     userId: t.string,
-    timeCompleted: t.string
+    timeCompleted: t.string,
+    xpEarned: t.number
 });
 
 export type CompletionT = t.TypeOf<typeof Completion>;
@@ -91,3 +92,10 @@ export const GetAllCompletionsResponse = t.type({
 });
 
 export type GetAllCompletionsResponseT = t.TypeOf<typeof GetAllCompletionsResponse>;
+
+export const GetSomeCompletionsResponse = t.type({
+    habit: Habit,
+    completions: t.array(Completion)
+});
+
+export type GetSomeCompletionsResponseT = t.TypeOf<typeof GetSomeCompletionsResponse>;

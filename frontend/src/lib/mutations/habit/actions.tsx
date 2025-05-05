@@ -2,6 +2,7 @@
 
 import { CreateHabitRequestT, EditHabitRequestT } from "@/lib/api/models";
 import { createHabit, deleteHabit, editHabit } from "@/lib/api/requests";
+import { redirect } from "next/navigation";
 import { auth0 } from "../../auth/auth0";
 
 export async function createHabitAction(req: CreateHabitRequestT) {
@@ -28,5 +29,6 @@ export async function deleteHabitAction(habitId: number) {
         return;
     }
 
-    return await deleteHabit(session.tokenSet.accessToken, habitId);
+    await deleteHabit(session.tokenSet.accessToken, habitId);
+    redirect('/home');
 }

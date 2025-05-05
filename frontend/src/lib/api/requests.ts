@@ -3,7 +3,7 @@ import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 import { redirect } from "next/navigation";
 import { Endpoints } from './endpoints';
-import { CreateCompletionRequestT, CreateHabitRequestT, CreateUserRequestT, EditHabitRequestT, EditUserRequestT, GenericResponse, GetAllCompletionsResponse, GetAllHabitsResponse, GetUserResponse } from './models';
+import { CreateCompletionRequestT, CreateHabitRequestT, CreateUserRequestT, EditHabitRequestT, EditUserRequestT, GenericResponse, GetAllCompletionsResponse, GetAllHabitsResponse, GetSomeCompletionsResponse, GetUserResponse } from './models';
 import { deleteReq, getReq, postReq } from './util';
 
 export async function request(url: string, data: RequestInit, accessToken: string): Promise<Response> {
@@ -48,7 +48,7 @@ export async function editUser(accessToken: string, req: EditUserRequestT) {
 }
 
 export async function getAllHabits(accessToken: string) {
-    return await requestAndDecode('/habit/all', getReq(), GetAllHabitsResponse, accessToken);
+    return await requestAndDecode('/habit/get/all', getReq(), GetAllHabitsResponse, accessToken);
 }
 
 export async function createHabit(accessToken: string, req: CreateHabitRequestT) {
@@ -68,5 +68,13 @@ export async function createCompletion(accessToken: string, req: CreateCompletio
 }
 
 export async function getAllCompletions(accessToken: string) {
-    return await requestAndDecode('/completion/all', getReq(), GetAllCompletionsResponse, accessToken);
+    return await requestAndDecode('/completion/get/all', getReq(), GetAllCompletionsResponse, accessToken);
+}
+
+export async function getSomeCompletions(accessToken: string, habitId: number) {
+    return await requestAndDecode(`/completion/get/${habitId}`, getReq(), GetSomeCompletionsResponse, accessToken);
+}
+
+export async function deleteCompletion(accessToken: string, habitId: number, completionId: number) {
+    return await requestAndDecode(`/completion/delete/${habitId}/${completionId}`, deleteReq(), GenericResponse, accessToken);
 }
