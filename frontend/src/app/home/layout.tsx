@@ -3,6 +3,7 @@ import ThemeToggle from "@/components/theme_toggle/theme_toggle";
 import CreateUserWindow from "@/components/windows/user/create";
 import { getUser } from "@/lib/api/requests";
 import { auth0 } from "@/lib/auth/auth0";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 export default async function HomeLayout({ children }: { children: ReactNode }) {
@@ -36,8 +37,10 @@ export default async function HomeLayout({ children }: { children: ReactNode }) 
                     {children}
                 </div>
             </div>
-            <div className="w-full bg-bg-dark">
-                <p className="text-fg-dark text-xs">v1.0.0</p>
+            <div className="flex items-center gap-2 w-full bg-bg-dark">
+                <p className="ml-2 text-fg-dark text-xs">For CS 157A</p>
+                <p className="text-fg-dark text-xs">|</p>
+                <Link className="text-fg-dark text-xs underline" href="https://github.com/hisidharth/HabitHero">GitHub</Link>
             </div>
         </div >
     )

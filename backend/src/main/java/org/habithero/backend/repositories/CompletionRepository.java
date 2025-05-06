@@ -6,10 +6,7 @@ import org.habithero.backend.utils.Pair;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,46 +63,31 @@ public class CompletionRepository {
         return true;
     }
 
-    public Pair<Map<Integer, Habit>, Map<Integer, ArrayList<Completion>>> getAll(String userId, int page) {
-        System.out.println(page);
-
-        Map<Integer, Habit> habits = new HashMap<>();
+    public Pair<ArrayList<Habit>, Map<Integer, ArrayList<Completion>>> getAll(String userId, Timestamp startTimestamp, Timestamp endTimestamp) {
         Map<Integer, ArrayList<Completion>> completions = new HashMap<>();
+
+        ArrayList<Habit> habits = this.habitRepository.getAll(userId);
+        if (habits == null) {
+            return null;
+        }
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT * FROM Completions " +
-                            "RIGHT OUTER JOIN Habits " +
-                            "ON Completions.HabitID = Habits.HabitID " +
-                            "WHERE Habits.UserID = ?;"
+                            "WHERE Completions.UserID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
             );
 
             stmt.setString(1, userId);
+            stmt.setTimestamp(2, startTimestamp);
+            stmt.setTimestamp(3, endTimestamp);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                int habitId = rs.getInt("Habits.HabitID");
+                int habitId = rs.getInt("HabitID");
 
-                Habit habit = habits.get(habitId);
-                if (habit == null) {
-                    habit = new Habit(
-                            habitId,
-                            userId,
-                            rs.getString("HabitName"),
-                            rs.getInt("Frequency"),
-                            rs.getString("Category")
-                    );
-                }
-
-                habits.put(habitId, habit);
-                ArrayList<Completion> completionList = completions.computeIfAbsent(habitId, k -> new ArrayList<>());
-
-                int completionId = rs.getInt("CompletionID");
-                if (completionId == 0) {
-                    continue;
-                }
-
-                completionList.add(completionFromResultSet(rs));
+                completions
+                        .computeIfAbsent(habitId, k -> new ArrayList<>())
+                        .add(completionFromResultSet(rs));
             }
         } catch(SQLException e) {
             return null;

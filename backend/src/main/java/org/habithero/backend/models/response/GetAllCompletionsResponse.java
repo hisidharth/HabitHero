@@ -10,6 +10,6 @@ import java.util.Map;
 public record GetAllCompletionsResponse(
         Timestamp startTime,
         Timestamp endTime,
-        Map<Integer, Habit> habits,
+        ArrayList<Habit> habits,
         Map<Integer, ArrayList<Completion>> completions
 ) {}

@@ -1,4 +1,4 @@
-export function dateToStr(d: Date) {
+export function dateToStr(d: Date, includeTime: boolean = true) {
     let hours = d.getHours();
     const s = hours < 12 ? 'am' : 'pm';
 
@@ -22,7 +22,7 @@ export function dateToStr(d: Date) {
 
     const minutes = String(d.getMinutes()).padStart(2, '0');
 
-    const dateStr = `${mdy} at ${hours}:${minutes}${s}`;
+    const dateStr = includeTime ? `${mdy} at ${hours}:${minutes}${s}` : mdy;
 
     return dateStr;
 }

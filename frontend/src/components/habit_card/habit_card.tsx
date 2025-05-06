@@ -49,7 +49,7 @@ function LogCompletionButton({ habit }: { habit: HabitT }) {
     )
 }
 
-export default function HabitCard({ habit, completions }: { habit: HabitT, completions?: Array<CompletionT> }) {
+export default function HabitCard({ habit, completions, disableLog }: { habit: HabitT, completions?: Array<CompletionT>, disableLog: boolean }) {
     const [editWindowVisible, setEditWindowVisible] = useState<boolean>(false);
 
     const numCompletions = completions?.length ?? 0;
@@ -60,9 +60,6 @@ export default function HabitCard({ habit, completions }: { habit: HabitT, compl
             <div className={`flex flex-col gap-5 p-6 w-full rounded-md bg-bg-medium`}>
                 <div className="flex grow items-center justify-between">
                     <div className="flex items-center gap-2">
-                        {/*complete && (
-                        <CheckCheck width={25} height={25} className="bg-bg-accent text-fg-accent p-1 rounded" />
-                    )*/}
                         <Link href={`/home/habit/${habit.habitId}`}>
                             <span className="text-fg-dark font-bold">{habit.habitName}</span>
                         </Link>
@@ -85,7 +82,13 @@ export default function HabitCard({ habit, completions }: { habit: HabitT, compl
                 </div>
                 <div className="flex grow items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <LogCompletionButton habit={habit} />
+                        {disableLog ? (
+                            <div className="bg-bg-light text-fg-accent text-xs rounded p-2">
+                                <Check width={15} height={15} className="text-fg-accent" />
+                            </div>
+                        ) : (
+                            <LogCompletionButton habit={habit} />
+                        )}
                         <span className="text-xs">
                             {numCompletions < habit.frequency ? (
                                 <span className="text-fg-medium">{habit.frequency - numCompletions} time(s) to go!</span>

@@ -6,7 +6,9 @@ import org.habithero.backend.models.response.GenericResponse;
 import org.habithero.backend.models.response.GetAllCompletionsResponse;
 import org.habithero.backend.models.response.GetSomeCompletionsResponse;
 import org.habithero.backend.repositories.CompletionRepository;
+import org.habithero.backend.utils.DateUtils;
 import org.habithero.backend.utils.JWTUtils;
+import org.habithero.backend.utils.Pair;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +41,11 @@ public class CompletionController {
     @GetMapping("/get/all")
     public GetAllCompletionsResponse getAll(final JwtAuthenticationToken jwt, @RequestParam int page) {
         String userId = JWTUtils.userIdFromToken(jwt);
-        var res = this.completionRepository.getAll(userId, page);
-        return new GetAllCompletionsResponse(
-                Timestamp.from(ZonedDateTime.now().toInstant()),
-                Timestamp.from(ZonedDateTime.now().toInstant()),
-                res.a,
-                res.b
-        );
+
+        Pair<Timestamp, Timestamp> timestamps = DateUtils.getPeriodTimestamps(page);
+        var res = this.completionRepository.getAll(userId, timestamps.a, timestamps.b);
+
+        return new GetAllCompletionsResponse(timestamps.a, timestamps.b, res.a, res.b);
     }
 
     @GetMapping("/get/{habitId}")
