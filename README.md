@@ -30,7 +30,7 @@ HabitHero is a gamified habit tracking web app that allows users to set weekly h
     <li>Otherwise, ensure your MySQL database has:
         <ol>
             <li>A user with the username "mysql" and the password "admin"</li>
-            <li>A database with the name "HabitHero"</li>
+            <li>A database with the name "habithero"</li>
         </ol>
     </li>
     </ol>
