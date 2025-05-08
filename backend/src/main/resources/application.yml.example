@@ -1,0 +1,8 @@
+debug: true
+server:
+  port: 6969
+
+okta:
+  oauth2:
+    issuer: <my Auth0 domain>
+    audience: habithero

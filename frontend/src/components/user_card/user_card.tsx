@@ -32,7 +32,7 @@ export default async function UserCard() {
                 <ProgressBar value={0.5} />
                 <div className="flex justify-center items-center gap-2">
                     <span className="text-fg-medium text-xs">XP</span>
-                    <span className="text-sm text-fg-dark font-bold">{user.xp}/5,000</span>
+                    <span className="text-sm text-fg-dark font-bold">2,500/5,000</span>
                 </div>
             </div>
         </div>
