@@ -4,6 +4,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
@@ -27,9 +28,9 @@ public class DataSourceConfig {
         DataSourceInitializer initializer = new DataSourceInitializer();
         initializer.setDataSource(dataSource);
 
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator(
-                new ClassPathResource("schema.sql")
-        );
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("create_schema.sql"));
+        populator.addScript(new ClassPathResource("initialize_data.sql"));
 
        initializer.setDatabasePopulator(populator);
 
