@@ -24,7 +24,7 @@ export default async function HabitPage({ params }: { params: Promise<{ id: stri
                             <ChevronLeft width={25} height={25} className="text-fg-dark" />
                         </Link>
                     </div>
-                    <HabitCard habit={res.habit} completions={res.completions} />
+                    <HabitCard habit={res.habit} completions={res.completions} disableLog={false} />
                 </div>
                 {res.completions.length > 0 ? (
                     <>

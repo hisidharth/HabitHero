@@ -14,8 +14,8 @@ CREATE TABLE Users (
     UserID VARCHAR(255) PRIMARY KEY,
     Username VARCHAR(63) NOT NULL,
     Email VARCHAR(255) UNIQUE NOT NULL,
-    CurrentLevel INT DEFAULT 1,
-    XP INT DEFAULT 0
+    CurrentLevel INT NOT NULL DEFAULT 1,
+    XP INT NOT NULL DEFAULT 0
 );
 
 /*CREATE TABLE Levels (
@@ -43,7 +43,6 @@ CREATE TABLE Completions (
     UserID VARCHAR(255) NOT NULL,
     TimeCompleted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     XPEarned INT NOT NULL,
-    StreakCount INT DEFAULT 0,
 
     CONSTRAINT FK_CompletionHabit
         FOREIGN KEY (HabitID)

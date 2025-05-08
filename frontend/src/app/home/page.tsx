@@ -4,19 +4,17 @@ import UserCard from "@/components/user_card/user_card";
 import { getAllCompletions } from "@/lib/api/requests";
 import { auth0 } from "@/lib/auth/auth0";
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ page: number | undefined }> }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ page: string | undefined }> }) {
     const { page } = await searchParams;
+
+    const pageNum = page ? parseInt(page) : 0;
 
     const session = await auth0.getSession();
     if (!session) {
         return;
     }
 
-    const res = await getAllCompletions(session.tokenSet.accessToken, page ?? 0);
-
-    console.log(page !== undefined && +page !== 0);
-    console.log(res.startTime);
-    console.log(res.endTime);
+    const res = await getAllCompletions(session.tokenSet.accessToken, pageNum);
 
     return (
         <div className="p-5 flex flex-col gap-5">
@@ -25,7 +23,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ p
                 <>
                     <p className="text-fg-medium">My Habits</p>
                     <div className="flex justify-center items-center p-5 bg-bg-medium rounded">
-                        <DateSelector startDate={new Date(res.startTime)} endDate={new Date(res.endTime)} prevUrl={`/home?page=${+(page ?? 0) + 1}`} nextUrl={(page && page > 0) ? `/home?page=${page - 1}` : undefined} />
+                        <DateSelector startDate={new Date(res.startTime)} endDate={new Date(res.endTime)} prevUrl={`/home?page=${(pageNum + 1)}`} nextUrl={pageNum > 0 ? `/home?page=${pageNum - 1}` : undefined} />
                     </div>
                 </>
             )}
@@ -35,7 +33,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ p
                         <p className="text-fg-dark">Create a habit to get started!</p>
                     </div>
                 )}
-                {res.habits.map((habit) => <HabitCard key={habit.habitId} habit={habit} completions={res.completions[habit.habitId]} disableLog={page !== undefined && +page !== 0} />)}
+                {res.habits.map((habit) => <HabitCard key={habit.habitId} habit={habit} completions={res.completions[habit.habitId]} disableLog={pageNum !== 0} />)}
             </div>
         </div>
     )

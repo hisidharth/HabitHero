@@ -64,7 +64,6 @@ public class UserRepository {
 
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
-                System.out.println("not found");
                 return null;
             }
 

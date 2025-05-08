@@ -37,6 +37,17 @@ body {
     }
 }
 
+@keyframes slide-left-animation {
+    0% {
+        transform: translateX(-200px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+
 .animate-fade-in {
     animation: fade-in-animation 1s;
     animation-fill-mode: forwards;
@@ -99,4 +110,12 @@ body {
     --color-fg-medium: var(--fg-medium);
     --color-fg-light: var(--fg-light);
     --color-fg-accent: var(--fg-accent);
+}
+
+.layout {
+    view-transition-name: layout;
+}
+
+::view-transition-group(layout) {
+    z-index: 100;
 }

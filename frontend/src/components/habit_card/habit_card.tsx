@@ -15,22 +15,25 @@ function LogCompletionButton({ habit }: { habit: HabitT }) {
     const { mutateAsync, reset, isIdle, isPending } = useCreateCompletionMutation();
 
     const [scope, animate] = useAnimate();
-    const [animationPlaying, setAnimationPlaying] = useState<boolean>(false);
+    const [animationPlayed, setAnimationPlayed] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isPending && !animationPlaying) {
+        if (isPending && !animationPlayed) {
             const clickAnimation = async () => {
                 await animate(scope.current, {
                     y: ['0px', '-10px', '0px', '-10px', '0px'],
-                }, { duration: 0.5 });
-                setAnimationPlaying(false);
+                }, { duration: 0.5, ease: 'easeOut' });
             }
 
-            setAnimationPlaying(true);
+            setAnimationPlayed(true);
             clickAnimation();
         }
 
-    }, [isPending, animationPlaying]);
+        else if (!isPending && animationPlayed) {
+            setAnimationPlayed(false);
+        }
+
+    }, [isPending, animationPlayed]);
 
     return (
         <motion.button
