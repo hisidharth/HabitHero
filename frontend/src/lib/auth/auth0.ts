@@ -4,7 +4,7 @@ import { Endpoints } from "../api/endpoints";
 export const auth0 = new Auth0Client({
     appBaseUrl: Endpoints.selfUrl,
     authorizationParameters: {
-        scope: 'openid profile email read:habits',
+        scope: 'openid profile email habits',
         audience: 'habithero',
     }
 });

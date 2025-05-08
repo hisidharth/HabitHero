@@ -13,7 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(((authorize) -> authorize
-                        .anyRequest().hasAuthority("SCOPE_read:habits"))
+                        .anyRequest().hasAuthority("SCOPE_habits"))
                 )
                 .cors(Customizer.withDefaults())
                 .oauth2ResourceServer((oauth2) -> oauth2
