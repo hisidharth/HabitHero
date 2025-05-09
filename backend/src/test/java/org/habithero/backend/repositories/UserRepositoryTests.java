@@ -13,8 +13,11 @@ public class UserRepositoryTests {
 
     @Test
     void testCreateUser() {
+                // Test user creation functionality
+
         boolean result = this.userRepository.create("testCreateUser_test_user", "TEST USER", "testCreateUser_test_user@example.com");
         assertThat(result).isTrue();
+        // Verify user was successfully created
 
         User user = this.userRepository.getById("testCreateUser_test_user");
         assertThat(user).isNotNull();
@@ -23,8 +26,11 @@ public class UserRepositoryTests {
 
     @Test
     void testEditUser() {
+                // Test updating user's username
+
         boolean result = this.userRepository.edit("test2", "TEST USER EDIT");
         assertThat(result).isTrue();
+        // Confirm username update
 
         User user = this.userRepository.getById("test2");
         assertThat(user).isNotNull();
@@ -33,6 +39,7 @@ public class UserRepositoryTests {
 
     @Test
     void testGetUser() {
+                // Test retrieving an existing user
         User user = this.userRepository.getById("test1");
         assertThat(user).isNotNull();
         assertThat(user.getEmail()).isEqualTo("test1@example.com");
