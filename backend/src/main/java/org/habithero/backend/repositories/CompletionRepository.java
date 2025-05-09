@@ -15,11 +15,18 @@ import java.util.Map;
 public class CompletionRepository {
     private final DataSource dataSource;
     private final HabitRepository habitRepository;
-    public CompletionRepository(DataSource dataSource, HabitRepository habitRepository) {
+    private final UserRepository userRepository;
+
+    public CompletionRepository(DataSource dataSource, HabitRepository habitRepository, UserRepository userRepository) {
         this.dataSource = dataSource;
         this.habitRepository = habitRepository;
+        this.userRepository = userRepository;
     }
     public boolean create(String userId, int habitId) {
+        if (!this.userRepository.addXp(userId, 100)) {
+            return false;
+        }
+
         try (Connection conn = dataSource.getConnection()) {
             // ensure habit is owned by user
             if (this.habitRepository.getById(userId, habitId) == null) {

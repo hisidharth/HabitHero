@@ -53,6 +53,37 @@ public class UserRepository {
         return true;
     }
 
+    public boolean addXp(String userId, int amount) {
+        User user = getById(userId);
+        if (user == null) {
+            return false;
+        }
+
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "UPDATE Users " +
+                            "SET XP = ?, CurrentLevel = ? " +
+                            "WHERE UserID = ?;"
+            );
+
+            int newXp = (user.getXp() + amount) % 1000;
+            int newLevel = (user.getXp() + amount >= 1000) ? user.getCurrentLevel() + 1 : user.getCurrentLevel();
+
+            stmt.setInt(1, newXp);
+            stmt.setInt(2, newLevel);
+            stmt.setString(3, userId);
+
+            if (stmt.executeUpdate() <= 0) {
+                return false;
+            }
+        } catch(SQLException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+
     public User getById(String userId) {
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
