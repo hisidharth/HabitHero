@@ -16,14 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CompletionRepositoryTests {
     @Autowired
     private CompletionRepository completionRepository;
+            // Test creating a new completion entry
 
     @Test
     void testCreateCompletion() {
         boolean result = this.completionRepository.create("test9", 15);
         assertThat(result).isTrue();
+                // Define broad date range for retrieval
 
         Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
         Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+        // Retrieve and verify the created completion
 
         Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test9", 15, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
@@ -33,11 +36,15 @@ public class CompletionRepositoryTests {
 
     @Test
     void testDeleteCompletion() {
+                // Test deleting an existing completion
+
         boolean result = this.completionRepository.delete("test7", 11, 15);
         assertThat(result).isTrue();
+        // Set broad range to confirm deletion result
 
         Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
         Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+        // Verify completion count after deletion
 
         Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test7", 11, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
@@ -47,8 +54,11 @@ public class CompletionRepositoryTests {
 
     @Test
     void testGetSomeCompletions() {
+                // Retrieve completions within a given period
+
         Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
         Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+        // Validate retrieval is successful and correct
 
         Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test1", 1, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
