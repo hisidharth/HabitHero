@@ -96,7 +96,7 @@ public class CompletionRepository {
         return new Pair<>(habits, completions);
     }
 
-    public Pair<Habit, ArrayList<Completion>> getSome(String userId, int habitId) {
+    public Pair<Habit, ArrayList<Completion>> getSome(String userId, int habitId, Timestamp startTimestamp, Timestamp endTimestamp) {
         ArrayList<Completion> completions = new ArrayList<>();
 
         Habit habit = this.habitRepository.getById(userId, habitId);
@@ -107,11 +107,13 @@ public class CompletionRepository {
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT * FROM Completions " +
-                            "WHERE UserID = ? AND HabitID = ?;"
+                            "WHERE UserID = ? AND HabitID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
             );
 
             stmt.setString(1, userId);
             stmt.setInt(2, habitId);
+            stmt.setTimestamp(3, startTimestamp);
+            stmt.setTimestamp(4, endTimestamp);
 
             ResultSet rs = stmt.executeQuery();
 

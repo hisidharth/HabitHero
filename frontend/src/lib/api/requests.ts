@@ -71,8 +71,8 @@ export async function getAllCompletions(accessToken: string, page?: number) {
     return await requestAndDecode(`/completion/get/all?page=${page ?? '0'}`, getReq(), GetAllCompletionsResponse, accessToken);
 }
 
-export async function getSomeCompletions(accessToken: string, habitId: number) {
-    return await requestAndDecode(`/completion/get/${habitId}`, getReq(), GetSomeCompletionsResponse, accessToken);
+export async function getSomeCompletions(accessToken: string, habitId: number, page?: number) {
+    return await requestAndDecode(`/completion/get/${habitId}?page=${page ?? '0'}`, getReq(), GetSomeCompletionsResponse, accessToken);
 }
 
 export async function deleteCompletion(accessToken: string, habitId: number, completionId: number) {

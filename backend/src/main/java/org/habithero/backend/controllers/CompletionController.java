@@ -49,9 +49,12 @@ public class CompletionController {
     }
 
     @GetMapping("/get/{habitId}")
-    public GetSomeCompletionsResponse getSome(final JwtAuthenticationToken jwt, @PathVariable int habitId) {
+    public GetSomeCompletionsResponse getSome(final JwtAuthenticationToken jwt, @PathVariable int habitId, @RequestParam int page) {
         String userId = JWTUtils.userIdFromToken(jwt);
-        var res = this.completionRepository.getSome(userId, habitId);
-        return new GetSomeCompletionsResponse(res.a, res.b);
+
+        Pair<Timestamp, Timestamp> timestamps = DateUtils.getPeriodTimestamps(page);
+        var res = this.completionRepository.getSome(userId, habitId, timestamps.a, timestamps.b);
+
+        return new GetSomeCompletionsResponse(timestamps.a, timestamps.b, res.a, res.b);
     }
 }

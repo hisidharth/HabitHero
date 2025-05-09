@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +22,10 @@ public class CompletionRepositoryTests {
         boolean result = this.completionRepository.create("test9", 15);
         assertThat(result).isTrue();
 
-        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test9", 15);
+        Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
+        Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+
+        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test9", 15, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
         assertThat(habitAndCompletions.b).isNotNull();
         assertThat(habitAndCompletions.b.size()).isEqualTo(1);
@@ -32,7 +36,10 @@ public class CompletionRepositoryTests {
         boolean result = this.completionRepository.delete("test7", 11, 15);
         assertThat(result).isTrue();
 
-        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test7", 11);
+        Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
+        Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+
+        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test7", 11, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
         assertThat(habitAndCompletions.b).isNotNull();
         assertThat(habitAndCompletions.b.size()).isEqualTo(9);
@@ -40,7 +47,10 @@ public class CompletionRepositoryTests {
 
     @Test
     void testGetSomeCompletions() {
-        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test1", 1);
+        Timestamp startTimestamp = Timestamp.valueOf("2000-01-01 00:00:00.000000");
+        Timestamp endTimestamp = Timestamp.valueOf("2100-01-01 00:00:00.000000");
+
+        Pair<Habit, ArrayList<Completion>> habitAndCompletions = this.completionRepository.getSome("test1", 1, startTimestamp, endTimestamp);
         assertThat(habitAndCompletions).isNotNull();
         assertThat(habitAndCompletions.b).isNotNull();
         assertThat(habitAndCompletions.b.size()).isEqualTo(5);

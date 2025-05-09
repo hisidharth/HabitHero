@@ -96,6 +96,8 @@ export const GetAllCompletionsResponse = t.type({
 export type GetAllCompletionsResponseT = t.TypeOf<typeof GetAllCompletionsResponse>;
 
 export const GetSomeCompletionsResponse = t.type({
+    startTime: t.string,
+    endTime: t.string,
     habit: Habit,
     completions: t.array(Completion)
 });
