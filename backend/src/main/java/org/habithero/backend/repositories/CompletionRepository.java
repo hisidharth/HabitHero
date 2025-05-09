@@ -18,30 +18,30 @@ public class CompletionRepository {
     private final UserRepository userRepository;
 
     public CompletionRepository(DataSource dataSource, HabitRepository habitRepository, UserRepository userRepository) {
-        this.dataSource = dataSource;
-        this.habitRepository = habitRepository;
-        this.userRepository = userRepository;
+        this.dataSource = dataSource; // Initialize database connection
+        this.habitRepository = habitRepository; // Access habits from DB
+        this.userRepository = userRepository; // Access users from DB
     }
+
+    // Create a completion entry and add XP to the user
     public boolean create(String userId, int habitId) {
-        if (!this.userRepository.addXp(userId, 100)) {
+        if (!this.userRepository.addXp(userId, 100)) { // Add XP to user
             return false;
         }
 
         try (Connection conn = dataSource.getConnection()) {
-            // ensure habit is owned by user
-            if (this.habitRepository.getById(userId, habitId) == null) {
+            if (this.habitRepository.getById(userId, habitId) == null) { // Validate habit ownership
                 return false;
             }
 
             PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO Completions (HabitID, UserID, XPEarned)" +
-                            "VALUES (?, ?, 100);"
+                    "INSERT INTO Completions (HabitID, UserID, XPEarned) VALUES (?, ?, 100);"
             );
 
             stmt.setInt(1, habitId);
             stmt.setString(2, userId);
 
-            stmt.executeUpdate();
+            stmt.executeUpdate(); // Execute insert statement
         } catch(SQLException e) {
             return false;
         }
@@ -49,18 +49,18 @@ public class CompletionRepository {
         return true;
     }
 
+    // Delete a specific completion entry
     public boolean delete(String userId, int habitId, int completionId) {
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                    "DELETE FROM Completions " +
-                            "WHERE UserID = ? AND HabitID = ? AND CompletionID = ?;"
+                    "DELETE FROM Completions WHERE UserID = ? AND HabitID = ? AND CompletionID = ?;"
             );
 
             stmt.setString(1, userId);
             stmt.setInt(2, habitId);
             stmt.setInt(3, completionId);
 
-            if (stmt.executeUpdate() <= 0) {
+            if (stmt.executeUpdate() <= 0) { // Check if delete was successful
                 return false;
             }
         } catch(SQLException e) {
@@ -70,30 +70,30 @@ public class CompletionRepository {
         return true;
     }
 
+    // Retrieve all completions for a user within a time period
     public Pair<ArrayList<Habit>, Map<Integer, ArrayList<Completion>>> getAll(String userId, Timestamp startTimestamp, Timestamp endTimestamp) {
         Map<Integer, ArrayList<Completion>> completions = new HashMap<>();
 
-        ArrayList<Habit> habits = this.habitRepository.getAll(userId);
+        ArrayList<Habit> habits = this.habitRepository.getAll(userId); // Get user habits
         if (habits == null) {
             return null;
         }
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT * FROM Completions " +
-                            "WHERE Completions.UserID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
+                    "SELECT * FROM Completions WHERE Completions.UserID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
             );
 
             stmt.setString(1, userId);
             stmt.setTimestamp(2, startTimestamp);
             stmt.setTimestamp(3, endTimestamp);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery(); // Execute query
             while (rs.next()) {
                 int habitId = rs.getInt("HabitID");
 
                 completions
-                        .computeIfAbsent(habitId, k -> new ArrayList<>())
+                        .computeIfAbsent(habitId, k -> new ArrayList<>()) // Group completions by habit
                         .add(completionFromResultSet(rs));
             }
         } catch(SQLException e) {
@@ -103,18 +103,18 @@ public class CompletionRepository {
         return new Pair<>(habits, completions);
     }
 
+    // Retrieve completions for a specific habit within a time period
     public Pair<Habit, ArrayList<Completion>> getSome(String userId, int habitId, Timestamp startTimestamp, Timestamp endTimestamp) {
         ArrayList<Completion> completions = new ArrayList<>();
 
-        Habit habit = this.habitRepository.getById(userId, habitId);
+        Habit habit = this.habitRepository.getById(userId, habitId); // Validate habit
         if (habit == null) {
             return null;
         }
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT * FROM Completions " +
-                            "WHERE UserID = ? AND HabitID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
+                    "SELECT * FROM Completions WHERE UserID = ? AND HabitID = ? AND Completions.TimeCompleted BETWEEN ? AND ?;"
             );
 
             stmt.setString(1, userId);
@@ -122,10 +122,10 @@ public class CompletionRepository {
             stmt.setTimestamp(3, startTimestamp);
             stmt.setTimestamp(4, endTimestamp);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery(); // Execute query
 
             while (rs.next()) {
-                completions.add(completionFromResultSet(rs));
+                completions.add(completionFromResultSet(rs)); // Add completion to list
             }
         } catch(SQLException e) {
             return null;
@@ -134,6 +134,7 @@ public class CompletionRepository {
         return new Pair<>(habit, completions);
     }
 
+    // Helper method to convert ResultSet to Completion object
     public Completion completionFromResultSet(ResultSet rs) throws SQLException {
         return new Completion(
                 rs.getInt("CompletionID"),
