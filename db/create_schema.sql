@@ -1,0 +1,55 @@
+USE habithero;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Levels;
+DROP TABLE IF EXISTS Habits;
+DROP TABLE IF EXISTS Completions;
+DROP TABLE IF EXISTS Rewards;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE Users (
+    UserID VARCHAR(255) PRIMARY KEY,
+    Username VARCHAR(63) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    CurrentLevel INT NOT NULL DEFAULT 1,
+    XP INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE Habits (
+    HabitID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID VARCHAR(255) NOT NULL,
+    HabitName VARCHAR(63) NOT NULL,
+    Frequency SMALLINT UNSIGNED NOT NULL CHECK (Frequency > 0 AND Frequency <= 100),
+    Category VARCHAR(63),
+
+    CONSTRAINT FK_HabitUser
+        FOREIGN KEY (UserID)
+        REFERENCES Users(UserID)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Completions (
+    CompletionID INT AUTO_INCREMENT PRIMARY KEY,
+    HabitID INT NOT NULL,
+    UserID VARCHAR(255) NOT NULL,
+    TimeCompleted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    XPEarned INT NOT NULL,
+
+    CONSTRAINT FK_CompletionHabit
+        FOREIGN KEY (HabitID)
+        REFERENCES Habits(HabitID)
+        ON DELETE CASCADE,
+
+    CONSTRAINT FK_CompletionUser
+        FOREIGN KEY (UserID)
+        REFERENCES Users(UserID)
+        ON DELETE CASCADE
+);
+
+
+
+
+
